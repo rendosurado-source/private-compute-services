@@ -29,11 +29,14 @@ interface ViewFeedbackData {
 enum class DataCollectionCategory {
   /** Legacy V1 ui will use this in lieu of any actual categories. */
   LegacyV1,
+  NotificationContent,
   TriggeringMessages,
   IntentQueries,
   ModelOutputs,
+  QuartzModelOutputs,
   MemoryEntities,
   SelectedEntityContent,
+  AppInfo,
 }
 
 data class DataCollectionCategoryData(val header: String, val body: String)

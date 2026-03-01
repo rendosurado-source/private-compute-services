@@ -19,10 +19,17 @@ package com.google.android.`as`.oss.feedback.config
 import com.google.android.`as`.oss.common.config.AbstractConfigReader
 import com.google.android.`as`.oss.common.config.FlagListener
 import com.google.android.`as`.oss.common.config.FlagManager
+import com.google.android.`as`.oss.common.flavor.BuildFlavor
+import com.google.android.`as`.oss.feedback.api.gateway.QuartzCUJ
+import com.google.android.`as`.oss.feedback.domain.DataCollectionCategory.AppInfo
+import com.google.android.`as`.oss.feedback.domain.DataCollectionCategory.NotificationContent
+import com.google.android.`as`.oss.feedback.domain.DataCollectionCategory.QuartzModelOutputs
 
 /** Config reader for Feedback. */
-class FeedbackConfigReader(private val flagManager: FlagManager) :
-  AbstractConfigReader<FeedbackConfig>() {
+class FeedbackConfigReader(
+  private val flagManager: FlagManager,
+  private val buildFlavor: BuildFlavor,
+) : AbstractConfigReader<FeedbackConfig>() {
   init {
     refreshConfig()
     flagManager
@@ -41,13 +48,22 @@ class FeedbackConfigReader(private val flagManager: FlagManager) :
       enableSelectedEntityContent = flagManager.get(FeedbackFlags.ENABLE_SELECTED_ENTITY_CONTENT),
       enableViewDataDialogV2SingleEntity =
         flagManager.get(FeedbackFlags.ENABLE_VIEW_DATA_DIALOG_V2_SINGLE_ENTITY),
-      enableViewDataDialogV2MultiEntity =
-        flagManager.get(FeedbackFlags.ENABLE_VIEW_DATA_DIALOG_V2_MULTI_ENTITY),
       enableOptInUiV2 = flagManager.get(FeedbackFlags.ENABLE_OPT_IN_UI_V2),
       enableGroundTruthSelectorSingleEntity =
         flagManager.get(FeedbackFlags.ENABLE_GROUND_TRUTH_SELECTOR_SINGLE_ENTITY),
       enableGroundTruthSelectorMultiEntity =
         flagManager.get(FeedbackFlags.ENABLE_GROUND_TRUTH_SELECTOR_MULTI_ENTITY),
+      dataCollectionCategoryDefaultOptIn =
+        if (buildFlavor == BuildFlavor.INTERNAL) {
+          mapOf(
+            QuartzCUJ.QUARTZ_CUJ_KEY_TYPE.name to
+              listOf(NotificationContent, QuartzModelOutputs, AppInfo),
+            QuartzCUJ.QUARTZ_CUJ_KEY_SUMMARIZATION.name to
+              listOf(NotificationContent, QuartzModelOutputs, AppInfo),
+          )
+        } else {
+          emptyMap()
+        },
     )
   }
 }

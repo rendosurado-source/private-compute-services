@@ -58,6 +58,11 @@ message GetFeedbackDonationDataResponse {
   repeated string ground_truth_options = 8 [deprecated = true];
 }
 
+// The notification view data screen V2 requires non-null categories for both
+// Spoon and Quartz. If any of the categories is null, we will block the view
+// data screen V2 for notification and use V1 instead. It's determined by data
+// suppliers rather than a configuration flag.
+//
 // Next ID: 26
 message FeedbackUiRenderingData {
   string feedback_dialog_good_feedback_title = 5
@@ -103,7 +108,7 @@ message FeedbackUiRenderingData {
   FeedbackViewDataCategoryTitles feedback_view_data_category_titles = 22;
 }
 
-// Next ID: 8
+// Next ID: 11
 message FeedbackViewDataCategoryTitles {
   string triggering_messages_title = 1
      ;
@@ -115,5 +120,10 @@ message FeedbackViewDataCategoryTitles {
   string expand_category_button_semantics_description = 6
      ;
   string collapse_category_button_semantics_description = 7
+     ;
+  string notification_content_title = 8
+     ;
+  string app_info_title = 9;
+  string quartz_model_outputs_title = 10
      ;
 }

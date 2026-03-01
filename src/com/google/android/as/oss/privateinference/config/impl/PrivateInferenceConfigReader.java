@@ -23,6 +23,7 @@ import com.google.android.as.oss.common.config.FlagManager;
 import com.google.android.as.oss.common.config.FlagManager.BooleanFlag;
 import com.google.android.as.oss.common.config.FlagManager.EnumFlag;
 import com.google.android.as.oss.common.config.FlagManager.IntegerFlag;
+import com.google.android.as.oss.common.config.FlagManager.LongFlag;
 import com.google.android.as.oss.common.config.FlagManager.StringFlag;
 import com.google.android.as.oss.privateinference.config.PrivateInferenceConfig;
 import com.google.android.as.oss.privateinference.library.bsa.token.cache.TokenCacheFlag;
@@ -60,6 +61,11 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
       BooleanFlag.create(
           FLAG_PREFIX + "attach_cert_header",
           PrivateInferenceConfig.DEFAULT_ATTACH_CERTIFICATE_HEADER);
+
+  static final BooleanFlag ENABLE_ARATEA_TOKEN_CACHE =
+      BooleanFlag.create(
+          FLAG_PREFIX + "enable_aratea_token_cache",
+          PrivateInferenceConfig.DEFAULT_ENABLE_ARATEA_TOKEN_CACHE);
 
   static final IntegerFlag PROXY_TOKEN_BATCH_SIZE_FLAG =
       IntegerFlag.create(
@@ -102,6 +108,26 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
           FLAG_PREFIX + "aratea_token_batch_size",
           PrivateInferenceConfig.DEFAULT_ARATEA_TOKEN_BATCH_SIZE);
 
+  static final IntegerFlag ARATEA_TOKEN_MEMORY_CACHE_MIN_POOL_SIZE_FLAG =
+      IntegerFlag.create(
+          FLAG_PREFIX + "aratea_token_memory_cache_min_pool_size",
+          PrivateInferenceConfig.DEFAULT_ARATEA_TOKEN_MEMORY_CACHE_MIN_POOL_SIZE);
+
+  static final IntegerFlag ARATEA_TOKEN_MEMORY_CACHE_PREFERRED_POOL_SIZE_FLAG =
+      IntegerFlag.create(
+          FLAG_PREFIX + "aratea_token_memory_cache_preferred_pool_size",
+          PrivateInferenceConfig.DEFAULT_ARATEA_TOKEN_MEMORY_CACHE_PREFERRED_POOL_SIZE);
+
+  static final IntegerFlag ARATEA_TOKEN_DURABLE_CACHE_MIN_POOL_SIZE_FLAG =
+      IntegerFlag.create(
+          FLAG_PREFIX + "aratea_token_durable_cache_min_pool_size",
+          PrivateInferenceConfig.DEFAULT_ARATEA_TOKEN_DURABLE_CACHE_MIN_POOL_SIZE);
+
+  static final IntegerFlag ARATEA_TOKEN_DURABLE_CACHE_PREFERRED_POOL_SIZE_FLAG =
+      IntegerFlag.create(
+          FLAG_PREFIX + "aratea_token_durable_cache_preferred_pool_size",
+          PrivateInferenceConfig.DEFAULT_ARATEA_TOKEN_DURABLE_CACHE_PREFERRED_POOL_SIZE);
+
   static final EnumFlag<TokenCacheFlag.Mode> ARATEA_TOKEN_CACHE_MODE_FLAG =
       EnumFlag.create(
           TokenCacheFlag.Mode.class,
@@ -131,6 +157,11 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
       IntegerFlag.create(
           FLAG_PREFIX + "proxy_config_refresh_interval_minutes",
           PrivateInferenceConfig.DEFAULT_PROXY_CONFIG_REFRESH_INTERVAL_MINUTES);
+
+  static final LongFlag PI_SERVER_CHANNEL_IDLE_TIMEOUT_MINUTES_FLAG =
+      LongFlag.create(
+          FLAG_PREFIX + "pi_server_channel_idle_timeout_minutes",
+          PrivateInferenceConfig.DEFAULT_PI_SERVER_CHANNEL_IDLE_TIMEOUT_MINUTES);
 
   private final FlagManager flagManager;
 
@@ -166,6 +197,7 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
         .setProxyAuthMode(PrivateInferenceConfig.DEFAULT_PROXY_AUTH_MODE)
         // Flags that can be overridden via Device Config flags.
         .setEnabled(flagManager.get(ENABLED_FLAG))
+        .setEnableArateaTokenCache(flagManager.get(ENABLE_ARATEA_TOKEN_CACHE))
         .setProxyConfigProviderType(flagManager.get(PROXY_CONFIG_PROVIDER_TYPE_FLAG))
         .setWaitForGrpcChannelReady(flagManager.get(ENABLE_WAIT_FOR_GRPC_CHANNEL_READY_FLAG))
         .setAttachCertificateHeader(flagManager.get(ATTACH_CERTIFICATE_HEADER_FLAG))
@@ -183,6 +215,14 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
         .setProxyTokenDurableCachePreferredPoolSize(
             flagManager.get(PROXY_TOKEN_DURABLE_CACHE_PREFERRED_POOL_SIZE_FLAG))
         .setArateaTokenBatchSize(flagManager.get(ARATEA_TOKEN_BATCH_SIZE_FLAG))
+        .setArateaTokenMemoryCacheMinPoolSize(
+            flagManager.get(ARATEA_TOKEN_MEMORY_CACHE_MIN_POOL_SIZE_FLAG))
+        .setArateaTokenMemoryCachePreferredPoolSize(
+            flagManager.get(ARATEA_TOKEN_MEMORY_CACHE_PREFERRED_POOL_SIZE_FLAG))
+        .setArateaTokenDurableCacheMinPoolSize(
+            flagManager.get(ARATEA_TOKEN_DURABLE_CACHE_MIN_POOL_SIZE_FLAG))
+        .setArateaTokenDurableCachePreferredPoolSize(
+            flagManager.get(ARATEA_TOKEN_DURABLE_CACHE_PREFERRED_POOL_SIZE_FLAG))
         .setArateaTokenCacheMode(flagManager.get(ARATEA_TOKEN_CACHE_MODE_FLAG))
         .setArateaTokenCacheRefreshIntervalMinutes(
             flagManager.get(ARATEA_TOKEN_CACHE_REFRESH_INTERVAL_MINUTES_FLAG))
@@ -193,6 +233,8 @@ class PrivateInferenceConfigReader extends AbstractConfigReader<PrivateInference
                 flagManager.get(PROXY_AUTH_HEADER_FLAG)))
         .setProxyConfigRefreshIntervalMinutes(
             flagManager.get(PROXY_CONFIG_REFRESH_INTERVAL_MINUTES_FLAG))
+        .setPiServerChannelIdleTimeoutMinutes(
+            flagManager.get(PI_SERVER_CHANNEL_IDLE_TIMEOUT_MINUTES_FLAG))
         .build();
   }
 

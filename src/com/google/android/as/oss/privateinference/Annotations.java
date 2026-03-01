@@ -33,6 +33,11 @@ public final class Annotations {
   @Retention(RetentionPolicy.RUNTIME)
   public @interface PrivateInferenceWaitForGrpcChannelReady {}
 
+  /** Annotation for aratea token cache enabled state. */
+  @Qualifier
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface PrivateInferenceEnableArateaTokenCache {}
+
   /** Annotation for whether to attach Android package name and certificate to the request. */
   @Qualifier
   @Retention(RetentionPolicy.RUNTIME)
@@ -42,6 +47,11 @@ public final class Annotations {
   @Qualifier
   @Retention(RetentionPolicy.RUNTIME)
   public @interface PrivateInferenceServerGrpcChannel {}
+
+  /** Annotation for the idle timeout of the Private Inference server gRPC channel. */
+  @Qualifier
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface PiServerChannelIdleTimeoutMinutes {}
 
   /** Annotation for the proxy configuration. */
   @Qualifier

@@ -19,6 +19,7 @@ package com.google.android.`as`.oss.delegatedui.service.templates.beacon
 import androidx.compose.ui.unit.dp
 
 internal object BeaconTemplateRendererConstants {
+  val IconButtonSizeXLarge = 48.dp
   val IconButtonSizeLarge = 32.dp
   val IconButtonSizeMedium = 24.dp
   val IconSizeNormal = 20.dp
